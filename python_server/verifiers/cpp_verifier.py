@@ -8,51 +8,18 @@ import pwd
 from Queue import Queue
 import subprocess
 
-test_header = """#include <setjmp.h>
-#include "unity.h"
-#include "%s"
+test_header = """
+#include "UnitTest++.h"
+//Solutions
+%s
 
-#define EXPECT_ABORT_BEGIN \\
-    if (TEST_PROTECT())    \\
-    {
-
-#define VERIFY_FAILS_END                                                       \\
-    }                                                                          \\
-    Unity.CurrentTestFailed = (Unity.CurrentTestFailed == 1) ? 0 : 1;          \\
-    if (Unity.CurrentTestFailed == 1) {                                        \\
-      SetToOneMeanWeAlreadyCheckedThisGuy = 1;                                 \\
-      UnityPrint("[[[[ Previous Test Should Have Failed But Did Not ]]]]");    \\
-      UNITY_OUTPUT_CHAR('\\n');                                                 \\
-    }
-
-#define VERIFY_IGNORES_END                                                     \\
-    }                                                                          \\
-    Unity.CurrentTestFailed = (Unity.CurrentTestIgnored == 1) ? 0 : 1;         \\
-    Unity.CurrentTestIgnored = 0;                                              \\
-    if (Unity.CurrentTestFailed == 1) {                                        \\
-      SetToOneMeanWeAlreadyCheckedThisGuy = 1;                                 \\
-      UnityPrint("[[[[ Previous Test Should Have Ignored But Did Not ]]]]");   \\
-      UNITY_OUTPUT_CHAR('\\n');                                                 \\
-    }
-
-int SetToOneToFailInTearDown;
-int SetToOneMeanWeAlreadyCheckedThisGuy;
-
-void setUp(void)
-{
-  SetToOneToFailInTearDown = 0;
-  SetToOneMeanWeAlreadyCheckedThisGuy = 0;
+//Tests
+%s
+int main() {
+  return UnitTest::RunAllTests();
 }
 
-void tearDown(void)
-{
-  if (SetToOneToFailInTearDown == 1)
-    TEST_FAIL_MESSAGE("<= Failed in tearDown");
-  if ((SetToOneMeanWeAlreadyCheckedThisGuy == 0) && (Unity.CurrentTestFailed > 0))
-  {
-    UnityPrint("[[[[ Previous Test Should Have Passed But Did Not ]]]]");
-    UNITY_OUTPUT_CHAR('\\n');
-  }
+
 }"""
 
 
@@ -74,7 +41,7 @@ def run_c_instance(jsonrequest, outQueue):
     solved = False
 
     uid = uuid.uuid4()
-    test_path = '/home/server/scipy-verifier/python_server/unity/test/'
+    test_path = '/home/verifiers/unity/test/'
     if not os.path.isdir(test_path):
         os.mkdir(test_path)
     src_file = test_path + 'CSolution_%s.h' % uid
@@ -89,8 +56,8 @@ def run_c_instance(jsonrequest, outQueue):
     _test.write(tests)
     _test.close()
 
-    os.chdir("/home/server/scipy-verifier/python_server/unity")
-    out_path = "/home/server/scipy-verifier/python_server/unity/out"
+    os.chdir("/home/verifiers/unity")
+    out_path = "/home/verifiers/unity/out"
     if not os.path.isdir(out_path):
         os.mkdir(out_path)
     cmd = "make TARGET_BASE=%s" % ('CSolution_%s' % uid)
