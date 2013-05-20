@@ -15,6 +15,7 @@ test_header = """
 
 //Tests
 %s
+
 int main() {
   return UnitTest::RunAllTests();
 }
@@ -23,9 +24,9 @@ int main() {
 }"""
 
 
-def run_c_instance(jsonrequest, outQueue):
-    """ run a C instance and  test the code"""
-    #laod json data in python object
+def run_cpp_instance(jsonrequest, outQueue):
+    """ run a CPP instance and  test the code"""
+    #load json data in python object
     try:
         jsonrequest = json.loads(jsonrequest)
         solution = str(jsonrequest["solution"])
@@ -41,65 +42,20 @@ def run_c_instance(jsonrequest, outQueue):
     solved = False
 
     uid = uuid.uuid4()
-    test_path = '/home/verifiers/unity/test/'
+    test_path = '/home/server/scipy-verifier/python_server/UnitTest++/solutions/'
     if not os.path.isdir(test_path):
         os.mkdir(test_path)
-    src_file = test_path + 'CSolution_%s.h' % uid
-    test_file = test_path + 'CSolution_%s.c' % uid
-
-    _solution = open(src_file, "w+")
-    _solution.write(solution)
-    _solution.close()
-
+    test_file = test_path + 'CPPSolution_%s.cpp' % uid
     _test = open(test_file, "w+")
-    _test.write(test_header % ('CSolution_%s.h' % uid))
-    _test.write(tests)
+    _test.write(test_header % (solution, tests))
     _test.close()
 
-    os.chdir("/home/verifiers/unity")
-    out_path = "/home/verifiers/unity/out"
-    if not os.path.isdir(out_path):
-        os.mkdir(out_path)
-    cmd = "make TARGET_BASE=%s" % ('CSolution_%s' % uid)
+    cmd = ("g++ -o %s " % uid) + (test_path + 'CPPSolution_%s.cpp ' % uid) + ('../libUnitTest++.a  -I ../src && ./%s' % uid)
     cmd = cmd.split()
     p = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=False)
     p.wait()
     stdout, stderr = p.communicate()
-    #get test results
-    stdout = stdout.splitlines()[5:-3]
-    stderr = stderr.splitlines()[0:-2]
-    if len(stderr) > 0:
-        for i in range(len(stderr)):
-            stderr[i] = stderr[i].replace("test/%s" % ('CSolution_%s.c' % uid),"Tests").\
-                replace("test/%s" % ('CSolution_%s.h' % uid), "Solution")
-        stderr = "\n".join(stderr)
-        responseDict = {'errors': stderr}
-        responseJSON = json.dumps(responseDict)
-        outQueue.put(responseJSON)
-        return
-
-    if len(stdout) > 0:
-        solved = True
-
-    for i in range(len(stdout)):
-        parameters = map(lambda x: x.strip(), stdout[i].split(":"))
-        if len(parameters) < 3:
-            continue
-        parameters = parameters[2:]
-        test_name = parameters[0];
-        test_pass = True if parameters[1] == "PASS" else False
-        if not test_pass:
-            solved = False
-            try:
-                expected, got = map(lambda x: x.strip(), re.findall("Expected(.*)Was(.*)", parameters[2])[0])
-                got = "%s - %s" % (got, parameters[2])
-            except BaseException:
-                expected, got = "", ""
-        else:
-            expected, got = "", ""
-        resultDict = {'call': test_name, 'expected': expected, 'received': "%s" % got, 'correct': test_pass}
-        resultList.append(resultDict)
-
+    print stdout, stderr
     responseDict = {"solved": solved, "results": resultList, "printed":None}
     responseJSON = json.dumps(responseDict)
     outQueue.put(responseJSON)
@@ -122,5 +78,5 @@ if __name__ == '__main__':
     os.setuid(user_uid)
     jsonrequet = sys.argv[1]
     out = Queue()
-    run_c_instance(jsonrequet, out)
+    run_cpp_instance(jsonrequet, out)
     print out.get()
