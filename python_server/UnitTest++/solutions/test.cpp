@@ -1,11 +1,11 @@
  #include <UnitTest++.h>
 
-  const int a = 100;
+  const int a = 101;
 
   int fact(int n) {
     if (n<0) return -1;
     else if (n==0) return 1;
-    else return n * fact(n-1); 
+    else return n * fact(n-1);
   }
 
   TEST(fact) {
@@ -19,6 +19,6 @@
     CHECK_EQUAL(a,101);
   }
 
-  int main() { 
+  int main() {
     return UnitTest::RunAllTests();
   }
