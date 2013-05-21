@@ -49,7 +49,6 @@ def run_cpp_instance(jsonrequest, outQueue):
     _test.close()
 
     cmd = ("g++ -o ../UnitTest++/solutions/%s " % uid) + (test_path + 'CPPSolution_%s.cpp ' % uid) + '../UnitTest++/libUnitTest++.a  -I ../UnitTest++/src'
-    #print cmd
     cmd = cmd.split()
     p = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=False)
     p.wait()
@@ -59,7 +58,19 @@ def run_cpp_instance(jsonrequest, outQueue):
     p = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=False)
     p.wait()
     stdout, stderr = p.communicate()
-    print stdout
+    if len(stderr) > 0:
+        responseDict = {'errors': stderr}
+        responseJSON = json.dumps(responseDict)
+        outQueue.put(responseJSON)
+        return
+
+    lines = stdout.split('\n')
+    lines.pop()
+    for line in lines:
+        values = line.split(':DELIMITER:') #sooo creative right?
+        #{"expected": "", "received": "", "call": "test_sum", "correct": true}
+        resultList.append({"expected": values[1], "received": values[2], "call": values[0], "correct": values[1] == values[2]})
+
     responseDict = {"solved": solved, "results": resultList, "printed":None}
     responseJSON = json.dumps(responseDict)
     outQueue.put(responseJSON)
@@ -84,4 +95,4 @@ if __name__ == '__main__':
     #sys.argv[1]
     out = Queue()
     run_cpp_instance(jsonrequet, out)
-    #print out.get()
+    print out.get()
