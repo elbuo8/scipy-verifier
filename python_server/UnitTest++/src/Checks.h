@@ -18,13 +18,14 @@ bool Check(Value const value)
 template< typename Expected, typename Actual >
 void CheckEqual(TestResults& results, Expected const& expected, Actual const& actual, TestDetails const& details)
 {
-    if (!(expected == actual))
-    {
+    //if (!(expected == actual))
+    //{
+    /*THIS IS A CRIME BUT I'm IN A HURRY */
         UnitTest::MemoryOutStream stream;
-        stream << "Expected " << expected << " but was " << actual;
+        stream << "" << expected << ":DELIMITER:" << actual;
 
         results.OnTestFailure(details, stream.GetText());
-    }
+    //}
 }
 
 void CheckEqual(TestResults& results, char const* expected, char const* actual, TestDetails const& details);
@@ -46,7 +47,7 @@ void CheckClose(TestResults& results, Expected const& expected, Actual const& ac
                 TestDetails const& details)
 {
     if (!AreClose(expected, actual, tolerance))
-    { 
+    {
         UnitTest::MemoryOutStream stream;
         stream << "Expected " << expected << " +/- " << tolerance << " but was " << actual;
 
@@ -127,7 +128,7 @@ void CheckArray2DClose(TestResults& results, Expected const& expected, Actual co
     {
         UnitTest::MemoryOutStream stream;
 
-        stream << "Expected [ ";    
+        stream << "Expected [ ";
 
 		for (int expectedRow = 0; expectedRow < rows; ++expectedRow)
         {
