@@ -91,7 +91,7 @@ if __name__ == '__main__':
     os.environ['LC_ALL'] = "en_US.UTF-8"
     os.setgid(user_gid)
     os.setuid(user_uid)'''
-    jsonrequet = '''{"solution": "const int a = 101;", "tests":  "TEST(TooSimple){CHECK_EQUAL(a,101);}"}'''
+    jsonrequet = '''{"solution": "const int a = 100;", "tests":  "TEST(TooSimple){CHECK_EQUAL(a,101);}"}'''
     #sys.argv[1]
     out = Queue()
     run_cpp_instance(jsonrequet, out)

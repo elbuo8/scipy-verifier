@@ -64,16 +64,16 @@ void CheckArrayEqual(TestResults& results, Expected const& expected, Actual cons
     for (int i = 0; i < count; ++i)
         equal &= (expected[i] == actual[i]);
 
-    if (!equal)
-    {
+    //if (!equal)
+    //{
         UnitTest::MemoryOutStream stream;
 
-		stream << "Expected [ ";
+		stream << "[";
 
 		for (int expectedIndex = 0; expectedIndex < count; ++expectedIndex)
             stream << expected[expectedIndex] << " ";
 
-		stream << "] but was [ ";
+		stream << "]:DELIMITER:[";
 
 		for (int actualIndex = 0; actualIndex < count; ++actualIndex)
             stream << actual[actualIndex] << " ";
