@@ -22,6 +22,7 @@ os.chdir("/home/server/scipy-verifier")
 
 verifiers_dict = {"r":"R_verifier.py",
                   "c" : "c_verifier.py",
+		'cpp': 'cpp_verifier.py',
                   "oc":"oc_verifier.py",
                   "scipy":"scipy_verifier.py",
                   "python":"python_verifier.py",
@@ -367,6 +368,7 @@ class HealthCheckHandler(tornado.web.RequestHandler):
 
         human_names = {"r": "R",
                        "c": "C",
+			'cpp': 'CPP',
                        "oc": "Objetive C",
                        "scipy": "Scipy",
                        "python": "Python",

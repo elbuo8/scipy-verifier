@@ -1,30 +1,34 @@
 src/TestReporterStdout.o:  src/TestReporterStdout.cpp src/TestReporterStdout.h \
-  src/TestReporter.h /usr/include/c++/4.2.1/cstdio \
-  /usr/include/c++/4.2.1/bits/c++config.h \
-  /usr/include/c++/4.2.1/bits/os_defines.h /usr/include/unistd.h \
-  /usr/include/_types.h /usr/include/sys/_types.h \
-  /usr/include/sys/cdefs.h /usr/include/sys/_symbol_aliasing.h \
-  /usr/include/sys/_posix_availability.h /usr/include/machine/_types.h \
-  /usr/include/i386/_types.h /usr/include/sys/unistd.h \
-  /usr/include/Availability.h /usr/include/AvailabilityInternal.h \
-  /usr/include/sys/select.h /usr/include/sys/appleapiopts.h \
-  /usr/include/sys/_structs.h /usr/include/sys/_select.h \
-  /usr/include/c++/4.2.1/bits/cpu_defines.h \
-  /usr/include/c++/4.2.1/cstddef \
-  /usr/llvm-gcc-4.2/bin/../lib/gcc/i686-apple-darwin11/4.2.1/include/stddef.h \
-  /usr/include/stdio.h src/TestDetails.h
+ src/TestReporter.h /usr/include/c++/4.6/cstdio \
+ /usr/include/c++/4.6/x86_64-linux-gnu/./bits/c++config.h \
+ /usr/include/c++/4.6/x86_64-linux-gnu/./bits/os_defines.h \
+ /usr/include/features.h /usr/include/x86_64-linux-gnu/bits/predefs.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/c++/4.6/x86_64-linux-gnu/./bits/cpu_defines.h \
+ /usr/include/stdio.h /usr/lib/gcc/x86_64-linux-gnu/4.6/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.6/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h src/TestDetails.h
 src/TestReporterStdout.cpp src/TestReporterStdout.h :
-  src/TestReporter.h /usr/include/c++/4.2.1/cstdio :
-  /usr/include/c++/4.2.1/bits/c++config.h :
-  /usr/include/c++/4.2.1/bits/os_defines.h /usr/include/unistd.h :
-  /usr/include/_types.h /usr/include/sys/_types.h :
-  /usr/include/sys/cdefs.h /usr/include/sys/_symbol_aliasing.h :
-  /usr/include/sys/_posix_availability.h /usr/include/machine/_types.h :
-  /usr/include/i386/_types.h /usr/include/sys/unistd.h :
-  /usr/include/Availability.h /usr/include/AvailabilityInternal.h :
-  /usr/include/sys/select.h /usr/include/sys/appleapiopts.h :
-  /usr/include/sys/_structs.h /usr/include/sys/_select.h :
-  /usr/include/c++/4.2.1/bits/cpu_defines.h :
-  /usr/include/c++/4.2.1/cstddef :
-  /usr/llvm-gcc-4.2/bin/../lib/gcc/i686-apple-darwin11/4.2.1/include/stddef.h :
-  /usr/include/stdio.h src/TestDetails.h :
+ src/TestReporter.h /usr/include/c++/4.6/cstdio :
+ /usr/include/c++/4.6/x86_64-linux-gnu/./bits/c++config.h :
+ /usr/include/c++/4.6/x86_64-linux-gnu/./bits/os_defines.h :
+ /usr/include/features.h /usr/include/x86_64-linux-gnu/bits/predefs.h :
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h :
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h :
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h :
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h :
+ /usr/include/c++/4.6/x86_64-linux-gnu/./bits/cpu_defines.h :
+ /usr/include/stdio.h /usr/lib/gcc/x86_64-linux-gnu/4.6/include/stddef.h :
+ /usr/include/x86_64-linux-gnu/bits/types.h :
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/libio.h :
+ /usr/include/_G_config.h /usr/include/wchar.h :
+ /usr/lib/gcc/x86_64-linux-gnu/4.6/include/stdarg.h :
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h :
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h src/TestDetails.h :

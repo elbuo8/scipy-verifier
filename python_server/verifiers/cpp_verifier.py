@@ -40,7 +40,7 @@ def run_cpp_instance(jsonrequest, outQueue):
     solved = False
 
     uid = uuid.uuid4()
-    test_path = '../UnitTest++/solutions/'
+    test_path = '/home/server/scipy-verifier/python_server/UnitTest++/solutions/'
     if not os.path.isdir(test_path):
         os.mkdir(test_path)
     test_file = test_path + 'CPPSolution_%s.cpp' % uid
@@ -48,12 +48,12 @@ def run_cpp_instance(jsonrequest, outQueue):
     _test.write(test_header % (solution, tests))
     _test.close()
 
-    cmd = ("g++ -o ../UnitTest++/solutions/%s " % uid) + (test_path + 'CPPSolution_%s.cpp ' % uid) + '../UnitTest++/libUnitTest++.a  -I ../UnitTest++/src'
+    cmd = ("g++ -o /home/server/scipy-verifier/python_server/UnitTest++/solutions/%s " % uid) + (test_path + 'CPPSolution_%s.cpp ' % uid) + '/home/server/scipy-verifier/python_server/UnitTest++/libUnitTest++.a  -I /home/server/scipy-verifier/python_server/UnitTest++/src'
     cmd = cmd.split()
     p = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=False)
     p.wait()
     stdout, stderr = p.communicate()
-    cmd = ('../UnitTest++/solutions/%s' % uid)
+    cmd = ('/home/server/scipy-verifier/python_server/UnitTest++/solutions/%s' % uid)
     cmd = cmd.split()
     p = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=False)
     p.wait()
@@ -63,7 +63,7 @@ def run_cpp_instance(jsonrequest, outQueue):
         responseJSON = json.dumps(responseDict)
         outQueue.put(responseJSON)
         return
-
+    solved = True
     lines = stdout.split('\n')
     lines.pop()
     for line in lines:
@@ -78,21 +78,20 @@ def run_cpp_instance(jsonrequest, outQueue):
 
 
 if __name__ == '__main__':
-    #pw_record = pwd.getpwnam("verifiers")
-    #user_name = pw_record.pw_name
-    #user_home_dir = pw_record.pw_dir
-    #user_uid = pw_record.pw_uid
-    #user_gid = pw_record.pw_gid
-    '''os.environ['HOME'] = user_home_dir
+    pw_record = pwd.getpwnam("verifiers")
+    user_name = pw_record.pw_name
+    user_home_dir = pw_record.pw_dir
+    user_uid = pw_record.pw_uid
+    user_gid = pw_record.pw_gid
+    os.environ['HOME'] = user_home_dir
     os.environ['LOGNAME'] = user_name
     os.environ['USER'] = user_name
     os.environ['LANGUAGE'] = "en_US.UTF-8"
     os.environ['LANG'] = "en_US.UTF-8"
     os.environ['LC_ALL'] = "en_US.UTF-8"
     os.setgid(user_gid)
-    os.setuid(user_uid)'''
-    jsonrequet = '''{"solution": "const int a = 100;", "tests":  "TEST(TooSimple){CHECK_EQUAL(a,100);}"}'''
-    #sys.argv[1]
+    os.setuid(user_uid)
+    jsonrequet = sys.argv[1]
     out = Queue()
     run_cpp_instance(jsonrequet, out)
     print out.get()
