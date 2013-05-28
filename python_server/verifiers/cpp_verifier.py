@@ -69,7 +69,7 @@ def run_cpp_instance(jsonrequest, outQueue):
     for line in lines:
         values = line.split(':DELIMITER:') #sooo creative right?
         #{"expected": "", "received": "", "call": "test_sum", "correct": true}
-        resultList.append({"expected": values[1], "received": values[2], "call": values[0], "correct": values[1] == values[2]})
+        resultList.append({"expected": values[1], "received": values[2], "call": values[0], "correct": True if values[3] == '1' else False})
 
     responseDict = {"solved": solved, "results": resultList, "printed":None}
     responseJSON = json.dumps(responseDict)
@@ -91,7 +91,7 @@ if __name__ == '__main__':
     os.environ['LC_ALL'] = "en_US.UTF-8"
     os.setgid(user_gid)
     os.setuid(user_uid)'''
-    jsonrequet = '''{"solution": "const int a = 100;", "tests":  "TEST(TooSimple){CHECK_EQUAL(a,101);}"}'''
+    jsonrequet = '''{"solution": "const int a = 100;", "tests":  "TEST(TooSimple){CHECK_EQUAL(a,100);}"}'''
     #sys.argv[1]
     out = Queue()
     run_cpp_instance(jsonrequet, out)

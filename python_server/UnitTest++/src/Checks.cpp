@@ -12,8 +12,9 @@ void CheckStringsEqual(TestResults& results, char const* expected, char const* a
 
     //if (strcmp(expected, actual))
     //{
+    bool verify = strcmp(expected, actual);
         UnitTest::MemoryOutStream stream;
-        stream << "" << expected << ":DELIMETER:" << actual;
+        stream << "" << expected << ":DELIMETER:" << actual << ":DELIMETER:" << verify;
 
         results.OnTestFailure(details, stream.GetText());
     //}

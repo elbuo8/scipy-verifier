@@ -21,8 +21,9 @@ void CheckEqual(TestResults& results, Expected const& expected, Actual const& ac
     //if (!(expected == actual))
     //{
     /*THIS IS A CRIME BUT I'm IN A HURRY */
+    bool verify = expected == actual;
         UnitTest::MemoryOutStream stream;
-        stream << "" << expected << ":DELIMITER:" << actual;
+        stream << "" << expected << ":DELIMITER:" << actual << ":DELIMITER:" << verify;
 
         results.OnTestFailure(details, stream.GetText());
     //}
@@ -46,13 +47,14 @@ template< typename Expected, typename Actual, typename Tolerance >
 void CheckClose(TestResults& results, Expected const& expected, Actual const& actual, Tolerance const& tolerance,
                 TestDetails const& details)
 {
-    if (!AreClose(expected, actual, tolerance))
-    {
+    //if (!AreClose(expected, actual, tolerance))
+    //{
+    bool verify = AreClose(expected, actual, tolerance);
         UnitTest::MemoryOutStream stream;
-        stream << "Expected " << expected << " +/- " << tolerance << " but was " << actual;
+        stream << "" << expected << ":DELIMITER:" << actual << ":DELIMITER:" << verify;
 
         results.OnTestFailure(details, stream.GetText());
-    }
+    //}
 }
 
 
@@ -66,8 +68,8 @@ void CheckArrayEqual(TestResults& results, Expected const& expected, Actual cons
 
     //if (!equal)
     //{
+    bool verify = equal;
         UnitTest::MemoryOutStream stream;
-
 		stream << "[";
 
 		for (int expectedIndex = 0; expectedIndex < count; ++expectedIndex)
@@ -78,10 +80,10 @@ void CheckArrayEqual(TestResults& results, Expected const& expected, Actual cons
 		for (int actualIndex = 0; actualIndex < count; ++actualIndex)
             stream << actual[actualIndex] << " ";
 
-		stream << "]";
+		stream << "]:DELIMITER:" << verify;
 
         results.OnTestFailure(details, stream.GetText());
-    }
+    //}
 }
 
 template< typename Expected, typename Actual, typename Tolerance >
@@ -99,21 +101,22 @@ void CheckArrayClose(TestResults& results, Expected const& expected, Actual cons
 {
     bool equal = ArrayAreClose(expected, actual, count, tolerance);
 
-    if (!equal)
-    {
+    //if (!equal)
+    //{
+        bool verify = equal;
         UnitTest::MemoryOutStream stream;
 
-        stream << "Expected [ ";
+        stream << "[";
         for (int expectedIndex = 0; expectedIndex < count; ++expectedIndex)
             stream << expected[expectedIndex] << " ";
-        stream << "] +/- " << tolerance << " but was [ ";
+        stream << "]:DELIMITER:[";
 
 		for (int actualIndex = 0; actualIndex < count; ++actualIndex)
             stream << actual[actualIndex] << " ";
-        stream << "]";
+        stream << "]:DELIMITER:" << verify;
 
         results.OnTestFailure(details, stream.GetText());
-    }
+    //}
 }
 
 template< typename Expected, typename Actual, typename Tolerance >
@@ -124,34 +127,35 @@ void CheckArray2DClose(TestResults& results, Expected const& expected, Actual co
     for (int i = 0; i < rows; ++i)
         equal &= ArrayAreClose(expected[i], actual[i], columns, tolerance);
 
-    if (!equal)
-    {
+    //if (!equal)
+    //{
+    bool verify = equal;
         UnitTest::MemoryOutStream stream;
 
-        stream << "Expected [ ";
+        stream << "[";
 
 		for (int expectedRow = 0; expectedRow < rows; ++expectedRow)
         {
-            stream << "[ ";
+            stream << "[";
             for (int expectedColumn = 0; expectedColumn < columns; ++expectedColumn)
                 stream << expected[expectedRow][expectedColumn] << " ";
-            stream << "] ";
+            stream << "]";
         }
 
-		stream << "] +/- " << tolerance << " but was [ ";
+		stream << "]:DELIMITER:[" << verify;
 
 		for (int actualRow = 0; actualRow < rows; ++actualRow)
         {
-            stream << "[ ";
+            stream << "[";
             for (int actualColumn = 0; actualColumn < columns; ++actualColumn)
                 stream << actual[actualRow][actualColumn] << " ";
-            stream << "] ";
+            stream << "]";
         }
 
-		stream << "]";
+		stream << "]:DELIMITER:" << equal;
 
         results.OnTestFailure(details, stream.GetText());
-    }
+    //}
 }
 
 }
